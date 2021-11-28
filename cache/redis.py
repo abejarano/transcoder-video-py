@@ -20,4 +20,8 @@ class Redis:
     def exists_file_in_cache(self, attr_file: dict) -> bool:
         cache_file = self.__cache.smembers(attr_file['objectId'])
 
-        return cache_file != set()
+        if cache_file == set():
+            self.save_to_cache(attr_file)
+            return False
+
+        return True

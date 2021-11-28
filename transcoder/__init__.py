@@ -1,3 +1,4 @@
+import logging
 import os
 
 from google.cloud import storage
@@ -28,3 +29,15 @@ def generate_version(version, bucket, temp_file_path, file_name):
     print("4-. Uploaded file " + path_new_video)
 
     os.remove(path_new_video)
+
+
+def logger():
+    mod_name = 'transcoder'
+    logger = logging.getLogger(mod_name)
+    handler = logging.StreamHandler()
+    formatter = logging.Formatter(
+        '%(asctime)s [%(name)-12s] %(levelname)-8s %(message)s')
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+    logger.setLevel(logging.DEBUG)
+    return logger

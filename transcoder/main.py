@@ -2,7 +2,7 @@ import os
 import tempfile
 import time
 
-from transcoder import storage_client, extract_version_from_name, generate_version
+from transcoder import storage_client, extract_version_from_name, generate_version, logger
 
 
 def get_version_generated(file_name: str) -> object:
@@ -11,7 +11,6 @@ def get_version_generated(file_name: str) -> object:
         return ['640x480', file_name.replace('1280x720_', '')]
 
     elif extract_version.find('640x480') == 0:
-        print('Video ' + extract_version + ' has already been processed')
         return ['', file_name]
 
     return ['1280x720', file_name]
@@ -24,8 +23,6 @@ def transcoder(bucket_id, file_name):
         return
 
     temp_file_path = os.path.join(tempfile.gettempdir(), file_name)
-
-    print(temp_file_path)
 
     bucket = storage_client.bucket(bucket_id)
 
@@ -45,4 +42,4 @@ def transcoder(bucket_id, file_name):
 
     os.remove(temp_file_path)
 
-    print("--- %s finish ---" % (time.time() - start_time))
+    print("--- %s transcoder process finished ---" % (time.time() - start_time))

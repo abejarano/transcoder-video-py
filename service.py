@@ -5,6 +5,7 @@ from decouple import config
 from google.cloud.pubsub_v1.subscriber.message import Message
 
 from cache.redis import Redis
+from transcoder import logger
 from transcoder.main import transcoder
 
 subscriber = pubsub_v1.SubscriberClient()
@@ -18,8 +19,6 @@ cache = Redis()
 
 
 def process_message(message: Message) -> None:
-    print('Receiver message')
-
     message.ack()
 
     today = datetime.date.today()
@@ -30,18 +29,13 @@ def process_message(message: Message) -> None:
         "objectId": message.attributes.get('objectId')
     }
 
-
-
     if message.attributes.get('eventType') != 'OBJECT_FINALIZE':
         return
 
     if cache.exists_file_in_cache(attr_file):
-        print('existe')
         return
 
-    cache.save_to_cache(attr_file)
-
-    print(attr_file)
+    print('Video ' + attr_file['objectId'] + ' receive')
 
     transcoder(
         attr_file['bucketId'],
@@ -55,7 +49,7 @@ with subscriber:
     try:
         streaming_pull_future.result()
     except TimeoutError as e:
-        print(
+        logger().debug(
             f"Listening for messages on {subscription_path} threw an exception: {e}."
         )
 
