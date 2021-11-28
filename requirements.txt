@@ -1,0 +1,6 @@
+six
+redis
+google-cloud-pubsub
+python-decouple
+PythonVideoConverter
+google-cloud-storage

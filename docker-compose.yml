@@ -1,0 +1,15 @@
+version: '3.1'
+services:
+  redis:
+    image: redis
+    container_name: tera_redis
+    ports:
+      - "6379:6379"
+    restart: always
+
+  transcoder-service:
+    container_name: tera_transcoder
+    build: .
+    env_file: .env
+    volumes:
+      - ${GOOGLE_APPLICATION_CREDENTIALS}:/credentials.json
