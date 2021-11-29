@@ -15,5 +15,4 @@ ENV GOOGLE_APPLICATION_CREDENTIALS="/credentials.json"
 
 COPY . .
 
-
 CMD ["python", "-u", "./service.py"]

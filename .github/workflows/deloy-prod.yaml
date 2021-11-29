@@ -36,7 +36,7 @@ jobs:
     # Build the Docker image
     - name: Build
       run: |-
-        docker-compose build --build-arg GOOGLE_CREDENTIALS="$GOOGLE_CREDENTIALS" --tag "gcr.io/$PROJECT_ID/transcoder-video-image:latest" .
+        docker build --build-arg GOOGLE_CREDENTIALS="$GOOGLE_CREDENTIALS" --tag "gcr.io/$PROJECT_ID/transcoder-video-image:latest" .
 
     # Push the Docker image to Google Container Registry
     - name: Publish
