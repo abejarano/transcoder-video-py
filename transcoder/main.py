@@ -8,9 +8,9 @@ from transcoder import storage_client, extract_version_from_name, generate_versi
 def get_version_generated(file_name: str) -> object:
     extract_version = extract_version_from_name(file_name)
     if extract_version.find('1280x720') == 0:
-        return ['640x480', file_name.replace('1280x720_', '')]
+        return ['720x480', file_name.replace('1280x720_', '')]
 
-    elif extract_version.find('640x480') == 0:
+    elif extract_version.find('720x480') == 0:
         return ['', file_name]
 
     return ['1280x720', file_name]
