@@ -8,10 +8,13 @@ def get_size_video(version: str) -> object:
     return version.split('x')
 
 
-def make_convert(source_video, video_name, version):
+def make_convert(source_video, video_name, version, destination):
     video_name = version + '_' + video_name
     width, height = get_size_video(version)
-    destination = os.path.join(tempfile.gettempdir(), video_name)
+    destination = os.path.join(destination, video_name)
+
+    print(destination)
+
 
     print("2-. In processing convert")
     c = Converter()
@@ -42,26 +45,30 @@ def make_convert(source_video, video_name, version):
     return [destination, video_name]
 
 
-def get_name_file(file_path: str) -> str:
+def get_name_and_path_file(file_path: str) -> str:
     if platform.system() == 'Windows':
         array_name = file_path.split("\\")
     else:
         array_name = file_path.split("/")
-
-    return array_name[len(array_name) - 1]
+    name = array_name[len(array_name) - 1]
+    return [
+        name,
+        file_path.replace(name, '')
+    ]
 
 
 def __main__(file_path: str):
-    versions = ['480x854', '720x1280']
+    versions = ['854x480', '1280x720']
 
-    temp_file_path = os.path.join(tempfile.gettempdir(), file_path)
+    [file_name, destination] = get_name_and_path_file(file_path)
 
     for version in versions:
         make_convert(
-            temp_file_path,
-            get_name_file(file_path),
-            version
+            file_path,
+            file_name,
+            version,
+            destination
         )
 
 
-__main__()
+__main__('path_file')
